@@ -1,5 +1,5 @@
 from flask import render_template, request
-from flaskexample import app
+from commentcondenser import app
 from sqlalchemy import create_engine
 from sqlalchemy_utils import database_exists, create_database
 import pandas as pd
@@ -17,12 +17,12 @@ con = psycopg2.connect(database = dbname, user=user)
 
 
 @ app.route('/')
-@app.route('/index')
+@app.route('/input')
 def index():
     user = {'nickname':'Miguel'} #fake user
     return render_template('index.html', title='home', user=user)
 
-    
+     
 @app.route('/db')
 def birth_page():
     sql_query = """                                                                       

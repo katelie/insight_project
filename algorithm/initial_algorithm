@@ -1,4 +1,3 @@
-from __future__ import print_function, division
 
 from __future__ import division, print_function
 
@@ -12,17 +11,58 @@ from itertools import groupby
 
 import pandas as pd
 import numpy as np
-# import scipy as sp
-# import scipy.stats as sps
+import scipy as sp
+import scipy.stats as sps
 import matplotlib.pyplot as plt
 import seaborn as sns
 import wordcloud as wc
 
 
-import nltk
-from nltk.stem.porter import PorterStemmer
-from nltk.corpus import stopwords
-from nltk.tokenize import word_tokenize
-from nltk.util import ngrams
-# from nltk import Text
+
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import TfidfTransformer
+from sklearn.naive_bayes import MultinomialNB
+
+wordcounts = CountVectorizer()
+transformer = TfidfTransformer(norm=None, use_idf=True, smooth_idf=True)
+commentclassifier = MultinomialNB()
+
+
+# import nltk
+# from nltk.stem.porter import PorterStemmer
+# from nltk.corpus import stopwords
+# from nltk.tokenize import word_tokenize
+# from nltk.util import ngrams
+# # from nltk import Text
+
+# porter = PorterStemmer()
+
+# %matplotlib inline
+
+# sns.set_context('notebook')
+# sns.set_style('ticks')
+
+
+
+
+
+
+# load data 
+
+# set X, Y 
+X_train = 1
+Y_train = 1
+
+
+# Features
+# tokenize 
+X_train_counts = wordcounts.fit_transtform(X_train)
+# wordcounts.vocabulary_.shape
+
+# transform 
+X_train_tf = 
+
+
+# train 
+commentclassifier.fit(X_train)
 

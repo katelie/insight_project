@@ -28,23 +28,6 @@ transformer = TfidfTransformer(norm=None, use_idf=True, smooth_idf=True)
 commentclassifier = MultinomialNB()
 
 
-# import nltk
-# from nltk.stem.porter import PorterStemmer
-# from nltk.corpus import stopwords
-# from nltk.tokenize import word_tokenize
-# from nltk.util import ngrams
-# # from nltk import Text
-
-# porter = PorterStemmer()
-
-# %matplotlib inline
-
-# sns.set_context('notebook')
-# sns.set_style('ticks')
-
-
-
-
 
 
 # load data 

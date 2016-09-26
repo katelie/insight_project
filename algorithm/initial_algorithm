@@ -1,51 +1,70 @@
+# from IPython.core.display import HTML
+# HTML("<style>.container { width:100% !important; float:center}</style>")
+
 
 from __future__ import division, print_function
 
 import os
-import glob
-import math
-import re
-from collections import Counter
-import datetime
-from itertools import groupby
 
 import pandas as pd
 import numpy as np
-import scipy as sp
-import scipy.stats as sps
 import matplotlib.pyplot as plt
 import seaborn as sns
-import wordcloud as wc
+from nltk.corpus import stopwords
+
+from sklearn.preprocessing import LabelEncoder
+from sklearn.naive_bayes import MultinomialNB, BernoulliNB
+from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
+from sklearn import decomposition
+from sklearn.pipeline import Pipeline
 
 
 
-from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.feature_extraction.text import TfidfTransformer
-from sklearn.naive_bayes import MultinomialNB
+comments_with_sentences_100_classified = pd.read_csv('comments_with_sentences_100_classified_4classes.csv')
+comments_with_sentences_100_classified.dropna(inplace=True)
 
-wordcounts = CountVectorizer()
-transformer = TfidfTransformer(norm=None, use_idf=True, smooth_idf=True)
-commentclassifier = MultinomialNB()
+### eventually add in folds etc
 
+X_train = comments_with_sentences_100_classified.sentence_tokens_stemmed[:50000] #\.as_matrix()
+X_test = comments_with_sentences_100_classified.loc[5000:, 'sentence_tokens_stemmed']
 
-
-
-# load data 
-
-# set X, Y 
-X_train = 1
-Y_train = 1
+target_train = comments_with_sentences_100_classified.category[:50000] #.as_matrix()
+target_test = comments_with_sentences_100_classified.category[50000:] #.as_matrix()
 
 
-# Features
-# tokenize 
-X_train_counts = wordcounts.fit_transtform(X_train)
-# wordcounts.vocabulary_.shape
-
-# transform 
-X_train_tf = 
+target.replace(['addition','substitution','omission'],'helpful',inplace=True)
 
 
-# train 
-commentclassifier.fit(X_train)
 
+
+classifier_helpful = Pipeline([('vectorizer', CountVectorizer(ngram_range=(1,3), stop_words=mystops, max_df=50, min_df=5)),
+                     ('transformer', TfidfTransformer(norm='l2', smooth_idf=True, sublinear_tf=False, use_idf=True)),
+                     ('classifier', MultinomialNB(alpha=1.0, class_prior=None, fit_prior=True))])
+
+
+classifier_substitutions = Pipeline([('vectorizer', CountVectorizer(ngram_range=(1,3), stop_words=mystops, max_df=50, min_df=5)),
+                     ('transformer', TfidfTransformer(norm='l2', smooth_idf=True, sublinear_tf=False, use_idf=True)),
+                     ('classifier', MultinomialNB(alpha=1.0, class_prior=None, fit_prior=True))])
+
+
+
+
+classifier_helpful = Pipeline([('vectorizer', CountVectorizer(ngram_range=(2,6), stop_words=mystops, max_df=1000000, min_df=5)),
+                     ('transformer', TfidfTransformer(norm='l2', smooth_idf=True, sublinear_tf=False, use_idf=False)),
+                     ('pca', PCA(n_components=500)),
+                     ('classifier', MultinomialNB(alpha=1.0, class_prior=None, fit_prior=True))])
+
+classifier_helpful.fit(X_train, target_train) 
+predicted = classifier_helpful.predict(X_test) 
+np.mean(predicted == target_test), test_all[(test_all.category_simple == predicted) & (test_all.category_simple == 'helpful' )].shape[0]
+
+
+
+from sklearn.cross_validation import StratifiedKFold
+   kfold = StratifiedKFold(y=y_train, n_folds=10, random_state=1)
+   scores = []
+   for k, (train, test) in enumerate(kfold):
+      pipe_lr.fit(X_train[train], y_train[train])
+      score = pipe_lr.score(X_train[test], y_train[test])
+      scores.append(score)
+      print('Fold: %s, Class dist.: %s, Acc: %.3f' % (k+1, np.bincount(y_train[train]), score))
